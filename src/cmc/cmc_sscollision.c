@@ -247,13 +247,16 @@ void sscollision_do(long k, long kp, double rperimax, double w[4], double W, dou
 
 
                         /* log collision */
-                        parafprintf(collisionfile, "t=%g single-single idm=%ld(mm=%g) id1=%ld(m1=%g):id2=%ld(m2=%g) (r=%g) typem=%d type1=%d type2=%d b[RSUN]=%g vinf[km/s]=%g rad1=%g rad2=%g rperi=%g coll_mult=%g\n",
+			/* Elena: changing format of this output*/
+
+                        parafprintf(collisionfile, "t=%g single-single idm=%ld(mm=%g) id1=%ld(m1=%g):id2=%ld(m2=%g) (r=%g) typem=%d type1=%d type2=%d rad1[RSUN]=%g rad2[RSUN]=%g b[RSUN]=%g vinf[km/s]=%g rperi=%g coll_mult=%g\n",
                                 TotalTime,
                                 star[knew].id, star_m[get_global_idx(knew)] * units.mstar / FB_CONST_MSUN,
                                 star[k].id, mass_k * units.mstar / FB_CONST_MSUN,
                                 star[kp].id, mass_kp * units.mstar / FB_CONST_MSUN,
                                 star_r[get_global_idx(knew)], star[knew].se_k, star[k].se_k, star[kp].se_k,
-                    b*units.l/RSUN,W*units.l/units.t/1.e5, star[k].rad*units.l/RSUN, star[kp].rad*units.l/RSUN, rperi*units.l/RSUN, collisions_multiple_hold);
+				star[k].rad*units.l/RSUN, star[kp].rad*units.l/RSUN,
+                    b*units.l/RSUN,W*units.l/units.t/1.e5, rperi*units.l/RSUN, collisions_multiple_hold);
 
                         /* destroy two progenitors */
                         destroy_obj(k);
@@ -424,13 +427,14 @@ void sscollision_do(long k, long kp, double rperimax, double w[4], double W, dou
 
 
                         /* log collision */
-                        parafprintf(collisionfile, "t=%g single-single idm=%ld(mm=%g) id1=%ld(m1=%g):id2=%ld(m2=%g) (r=%g) typem=%d type1=%d type2=%d b[RSUN]=%g vinf[km/s]=%g rad1=%g rad2=%g rperi=%g coll_mult=%g\n",
+                        parafprintf(collisionfile, "t=%g single-single idm=%ld(mm=%g) id1=%ld(m1=%g):id2=%ld(m2=%g) (r=%g) typem=%d type1=%d type2=%d rad1[RSUN]=%g rad2[RSUN]=%g b[RSUN]=%g vinf[km/s]=%g rperi=%g coll_mult=%g\n",
                                 TotalTime,
                                 star[knew].id, star_m[get_global_idx(knew)] * units.mstar / FB_CONST_MSUN,
                                 star[k].id, mass_k * units.mstar / FB_CONST_MSUN,
                                 star[kp].id, mass_kp * units.mstar / FB_CONST_MSUN,
                                 star_r[get_global_idx(knew)], star[knew].se_k, star[k].se_k, star[kp].se_k,
-                    b*units.l/RSUN,W*units.l/units.t/1.e5, star[k].rad*units.l/RSUN, star[kp].rad*units.l/RSUN, rperi*units.l/RSUN, collisions_multiple_hold);
+			        star[k].rad*units.l/RSUN, star[kp].rad*units.l/RSUN,
+                    b*units.l/RSUN,W*units.l/units.t/1.e5,  rperi*units.l/RSUN, collisions_multiple_hold);
 
                         /* destroy two progenitors */
                         destroy_obj(k);
@@ -576,13 +580,14 @@ void sscollision_do(long k, long kp, double rperimax, double w[4], double W, dou
 
 
                         /* log collision */
-                        parafprintf(collisionfile, "t=%g single-single idm=%ld(mm=%g) id1=%ld(m1=%g):id2=%ld(m2=%g) (r=%g) typem=%d type1=%d type2=%d b[RSUN]=%g vinf[km/s]=%g rad1=%g rad2=%g rperi=%g coll_mult=%g\n",
+                        parafprintf(collisionfile, "t=%g single-single idm=%ld(mm=%g) id1=%ld(m1=%g):id2=%ld(m2=%g) (r=%g) typem=%d type1=%d type2=%d rad1[RSUN]=%g rad2[RSUN]=%g b[RSUN]=%g vinf[km/s]=%g rad1=%g rad2=%g rperi=%g coll_mult=%g\n",
                                 TotalTime,
                                 star[knew].id, star_m[get_global_idx(knew)] * units.mstar / FB_CONST_MSUN,
                                 star[k].id, mass_k * units.mstar / FB_CONST_MSUN,
                                 star[kp].id, mass_kp * units.mstar / FB_CONST_MSUN,
                                 star_r[get_global_idx(knew)], star[knew].se_k, star[k].se_k, star[kp].se_k,
-                    b*units.l/RSUN,W*units.l/units.t/1.e5, star[k].rad*units.l/RSUN, star[kp].rad*units.l/RSUN, rperi*units.l/RSUN, collisions_multiple_hold);
+				star[k].rad*units.l/RSUN, star[kp].rad*units.l/RSUN,
+                    b*units.l/RSUN,W*units.l/units.t/1.e5, rperi*units.l/RSUN, collisions_multiple_hold);
 
                         /* destroy two progenitors */
                         destroy_obj(k);
@@ -771,13 +776,14 @@ void sscollision_do(long k, long kp, double rperimax, double w[4], double W, dou
 
 
                 /* log collision */
-                parafprintf(collisionfile, "t=%g single-single idm=%ld(mm=%g) id1=%ld(m1=%g):id2=%ld(m2=%g) (r=%g) typem=%d type1=%d type2=%d b[RSUN]=%g vinf[km/s]=%g rad1=%g rad2=%g rperi=%g coll_mult=%g\n",
+                parafprintf(collisionfile, "t=%g single-single idm=%ld(mm=%g) id1=%ld(m1=%g):id2=%ld(m2=%g) (r=%g) typem=%d type1=%d type2=%d rad1[RSUN]%g rad2[RSUN]=%g b[RSUN]=%g vinf[km/s]=%g rperi=%g coll_mult=%g\n",
                         TotalTime,
                         star[knew].id, star_m[get_global_idx(knew)] * units.mstar / FB_CONST_MSUN,
                         star[k].id, mass_k * units.mstar / FB_CONST_MSUN,
                         star[kp].id, mass_kp * units.mstar / FB_CONST_MSUN,
                         star_r[get_global_idx(knew)], star[knew].se_k, star[k].se_k, star[kp].se_k,
-            b*units.l/RSUN,W*units.l/units.t/1.e5, star[k].rad*units.l/RSUN, star[kp].rad*units.l/RSUN, rperi*units.l/RSUN, collisions_multiple);
+	                star[k].rad*units.l/RSUN, star[kp].rad*units.l/RSUN,
+            b*units.l/RSUN,W*units.l/units.t/1.e5, rperi*units.l/RSUN, collisions_multiple);
 
                 /* destroy two progenitors */
                 destroy_obj(k);
@@ -871,13 +877,14 @@ void sscollision_do(long k, long kp, double rperimax, double w[4], double W, dou
                                         - 0.5 * star_m[g_knew] * madhoc * star_phi[g_knew];
 
                                 /* log collision */
-                                parafprintf(collisionfile, "t=%g single-single idm=%ld(mm=%g) id1=%ld(m1=%g):id2=%ld(m2=%g) (r=%g) typem=%d type1=%d type2=%d b[RSUN]=%g vinf[km/s]=%g rad1=%g rad2=%g rperi=%g coll_mult=%g\n",
+                                parafprintf(collisionfile, "t=%g single-single idm=%ld(mm=%g) id1=%ld(m1=%g):id2=%ld(m2=%g) (r=%g) typem=%d type1=%d type2=%d rad1[RSUN]=%g rad2[RSUN]=%g b[RSUN]=%g vinf[km/s]=%g rperi=%g coll_mult=%g\n",
                                         TotalTime,
                                         star[knew].id, star_m[get_global_idx(knew)] * units.mstar / FB_CONST_MSUN,
                                         star[k].id, mass_k * units.mstar / FB_CONST_MSUN,
                                         star[kp].id, mass_kp * units.mstar / FB_CONST_MSUN,
                                         star_r[get_global_idx(knew)], star[knew].se_k, star[k].se_k, star[kp].se_k,
-                            b*units.l/RSUN,W*units.l/units.t/1.e5, star[k].rad*units.l/RSUN, star[kp].rad*units.l/RSUN, rperi*units.l/RSUN, rperi/(star[k].rad+star[kp].rad));
+			                star[k].rad*units.l/RSUN, star[kp].rad*units.l/RSUN,
+                            b*units.l/RSUN,W*units.l/units.t/1.e5, rperi*units.l/RSUN, rperi/(star[k].rad+star[kp].rad));
 
                                 /* destroy two progenitors */
                                 destroy_obj(k);
