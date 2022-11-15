@@ -962,49 +962,6 @@ double binint_get_mass(long k, long kp, long id)
 	exit(1);
 }
 
-/**Elena
-* @brief find Radii of merging stars from binary interaction components
-*
-* @param k index of first star
-* @param kp index of second star
-* @param id id of star
-*
-* @return masses of merging stars
-*/
-double binint_get_radii(long k, long kp, long id)
-{
-	/* first look at k */
-	if (star[k].binind == 0) {
-		if (star[k].id == id) {
-			return(star[k].rad);
-		}
-	} else {
-		if (binary[star[k].binind].id1 == id) {
-			return(binary[star[k].binind].rad1);
-		} else if (binary[star[k].binind].id2 == id) {
-			return(binary[star[k].binind].rad2);
-		}
-	}
-	
-	/* then at kp */
-	if (star[kp].binind == 0) {
-		if (star[kp].id == id) {
-			return(star[kp].rad);
-		}
-	} else {
-		if (binary[star[kp].binind].id1 == id) {
-			return(binary[star[kp].binind].rad1);
-		} else if (binary[star[kp].binind].id2 == id) {
-			return(binary[star[kp].binind].rad2);
-		}
-	}
-	
-	eprintf("cannot find matching id %ld!\n", id);
-	exit_cleanly(1, __FUNCTION__);
-	/* this is just for the compiler */
-	exit(1);
-}
-
 /**
 * @brief find spins of merging black holes from binary interaction components
 *
@@ -1392,11 +1349,7 @@ void binint_log_collision(const char interaction_type[], long id,
 	for (j=0; j<obj.ncoll; j++) {
 		parafprintf(collisionfile, "type%d=%ld ", j+1, 
 				binint_get_startype(k, kp, obj.id[j]));// Use this, not the Fewbody type, since this is changed by BSE after mergers
-
-//Elena: extra output for bs and bb interactions
-		parafprintf(collisionfile, "rad%d[RSUN]=%g ", j+1, binint_get_radii(k, kp, obj.id[j])*units.l/RSUN);
 	}
-
 	parafprintf(collisionfile, "\n");
 }
 
