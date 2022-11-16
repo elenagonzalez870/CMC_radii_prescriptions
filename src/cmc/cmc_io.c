@@ -708,7 +708,11 @@ void PrintParaFileOutput(void)
     if (WRITE_MOREPULSAR_INFO)
         mpi_para_file_write(mpi_morepulsarfile_wrbuf, &mpi_morepulsarfile_len, &mpi_morepulsarfile_ofst_total, &mpi_morepulsarfile);
 
-    /* Meagan's 3bb files */
+/*Elena */   
+    if (WRITE_MORECOLL_INFO)
+        mpi_para_file_write(mpi_morecorefile_wrbuf, &mpi_morecollfile_len, &mpi_morecollfile_ofst_total, &mpi_morecollfile);   
+    
+/* Meagan's 3bb files */
     if (WRITE_BH_INFO){
         mpi_para_file_write(mpi_newbhfile_wrbuf, &mpi_newbhfile_len, &mpi_newbhfile_ofst_total, &mpi_newbhfile);
         mpi_para_file_write(mpi_bhmergerfile_wrbuf, &mpi_bhmergerfile_len, &mpi_bhmergerfile_ofst_total, &mpi_bhmergerfile);
@@ -2418,8 +2422,13 @@ MPI: In the parallel version, IO is done in the following way. Some files requir
 		MPI_File_set_size(mpi_morepulsarfile, 0);
     }
 
-
-	//MPI: Headers are written out only by the root node.
+    /* Elena */
+    if (WRITE_MORECOLL_INFO){
+        sprintf(outfile, "%s.morecoll.dat", outprefix);
+        MPI_File_open(MPI_COMM_WORLD, outfile, MPI_MODE_CREATE | MPI_MODE_WRONLY, MPI_INFO_NULL, &mpi_morecollfile);
+        if(RESTART_TCOUNT <= 0)
+}	
+//MPI: Headers are written out only by the root node.
    // print header
     if(RESTART_TCOUNT <= 0){
 		pararootfprintf(escfile, "#1:tcount #2:t #3:m[MSUN] #4:r #5:vr #6:vt #7:r_peri #8:r_apo #9:Rtidal #10:phi_rtidal #11:phi_zero #12:E #13:J #14:id #15:binflag #16:m0[MSUN] #17:m1[MSUN] #18:id0 #19:id1 #20:a #21:e #22:startype #23:bin_startype0 #24:bin_startype1 #25:rad0 #26:rad1 #27:tb #28:lum0 #29:lum1 #30:massc0 #31:massc1 #32:radc0 #33:radc1 #34:menv0 #35:menv1 #36:renv0 #37:renv1 #38:tms0 #39:tms1 #40:dmdt0 #41:dmdt1 #42:radrol0 #43:radrol1 #44:ospin0 #45:ospin1 #46:B0 #47:B1 #48:formation0 #49:formation1 #50:bacc0 #51:bacc1 #52:tacc0 $53:tacc1 #54:mass0_0 #55:mass0_1 #56:epoch0 #57:epoch1 #58:bhspin #59:bhspin1 #60:bhspin2 #61:ospin #62:B #63:formation\n");
@@ -2464,7 +2473,9 @@ MPI: In the parallel version, IO is done in the following way. Some files requir
                 /* print header */ //Shi
                 if (WRITE_MOREPULSAR_INFO)
                		pararootfprintf(morepulsarfile,"#1:tcount #2:TotalTime #3:binflag #4:id0 #5:id1 #6:m0[MSUN] #7:m1[MSUN] #8:B0[G] #9:B1[G] #10:P0[sec] #11:P1[sec] #12:startype0 #13:startype1 #14:a[AU] #15:ecc #16:radrol0 #17:radrol1 #18:dmdt0 #19:dmdt1 #20:r #21:vr #22:vt #23:bacc0 #24:bacc1 #25:tacc0 #26:tacc1 #27:formation0 #28:formation1\n");
-
+                /* print header */ //Elena
+                if (WRITE_MORECOLL_INFO)
+                        pararootfprintf(morecollfile,"#1:TotalTime #2:collision-type #3:id0 #4:id1 #5:m0[MSUN] #6:m1[MSUN] #7:rad1[RSUN] #8:rad2[RSUN] #9:rho0_c[units?] #10:rho1_c[] #11:rho0_env[] #12:rho1_env[] #13:kstar0 #14:kstar1 #15:idr #16:mr[MSUN] #17:radr[RSUN] #18:rhor_c[] #19:rhor_env[] #20:kstarr\n");
 	} /*if(RESTART_TCOUNT == 0)*/
 
 }
@@ -2549,7 +2560,12 @@ void close_node_buffers(void)
     if (WRITE_MOREPULSAR_INFO){
     	fclose(morepulsarfile);
     }
+    /*Elena */
+    if (WRITE_MORECOLL_INFO){
+        fclose(morecollfile);
+	}
 }
+
 
 /**
 * @brief Closes the MPI file pointers - of files which require writing only by the all nodes.
@@ -2587,7 +2603,10 @@ void mpi_close_node_buffers(void)
     if (WRITE_MOREPULSAR_INFO){
     	MPI_File_close(&mpi_morepulsarfile);
     }
-
+    //Elena
+    if (WRITE_MORECOLL_INFO){
+        MPI_File_close(&mpi_morecollfile);
+                }
 }
 
 /**
