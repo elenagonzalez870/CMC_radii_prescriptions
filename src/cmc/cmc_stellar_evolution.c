@@ -916,12 +916,12 @@ void handle_bse_outcome(long k, long kb, double *vs, double tphysf, int kprev0, 
     cp_binmemb_to_star(k, 0, knew);
     cp_binmemb_to_star(k, 1, knewp);
     DMse -= (star_m[get_global_idx(knew)] + star_m[get_global_idx(knewp)]) * madhoc;
-
-    parafprintf(semergedisruptfile, "t=%g disruptboth id1=%ld(m1=%g) id2=%ld(m2=%g) (r=%g) type1=%d type2=%d\n",
+    /*Elena: Modifying output */
+    parafprintf(semergedisruptfile, "t=%g disruptboth id1=%ld(m1=%g) id2=%ld(m2=%g) (r=%g) type1=%d type2=%d rad1[RSUN]=%g, rad2[RSUN]=%g\n",
       TotalTime,
       star[knew].id, star[knew].se_mt, 
       star[knewp].id, star_m[get_global_idx(knewp)] * units.mstar / FB_CONST_MSUN,
-      star_r[get_global_idx(k)], kprev0, kprev1);
+		star_r[get_global_idx(k)], kprev0, kprev1, binary[kb].rad1 * units.l / RSUN,binary[kb].rad2 * units.l / RSUN]);
 
     destroy_obj(k);
     /* in this case vs is relative speed between stars at infinity */
@@ -1037,12 +1037,14 @@ void handle_bse_outcome(long k, long kb, double *vs, double tphysf, int kprev0, 
 	if(kprev0 == 14 && kprev1 == 14)
 		binary_bh_merger(k, kb, knew, kprev0, kprev1, curr_st);
 
-    parafprintf(semergedisruptfile, "t=%g disrupt1 idr=%ld(mr=%g) id1=%ld(m1=%g):id2=%ld(m2=%g) (r=%g) typer=%d type1=%d type2=%d\n",
+    /*Elena: Modifying output */
+    parafprintf(semergedisruptfile, "t=%g disrupt1 idr=%ld(mr=%g) id1=%ld(m1=%g):id2=%ld(m2=%g) (r=%g) typer=%d type1=%d type2=%d, radr[RSUN]=%g,rad1[RSUN]=%g, rad2[RSUN]=%g\n",
       TotalTime,
       star[knew].id, star[knew].se_mt,
       binary[kb].id1, binary[kb].m1 * units.mstar / FB_CONST_MSUN,
       binary[kb].id2, binary[kb].m2 * units.mstar / FB_CONST_MSUN,
-      star_r[get_global_idx(k)], star[knew].se_k, kprev0, kprev1);
+		star_r[get_global_idx(k)], star[knew].se_k, kprev0, kprev1,
+		star[knew].rad * units.l/ RSUN, binary[kb].rad1 * units.l / RSUN,binary[kb].rad2 * units.l / RSUN);
     destroy_obj(k);
     if (sqrt(vs[1]*vs[1]+vs[2]*vs[2]+vs[3]*vs[3]) != 0.0) {
       //dprintf("birth kick of %f km/s\n", sqrt(vs[0]*vs[0]+vs[1]*vs[1]+vs[2]*vs[2]));
@@ -1129,12 +1131,13 @@ void handle_bse_outcome(long k, long kb, double *vs, double tphysf, int kprev0, 
 	if(kprev0 == 14 && kprev1 == 14)
 		binary_bh_merger(k, kb, knew, kprev0, kprev1, curr_st);
 
-    parafprintf(semergedisruptfile, "t=%g disrupt2 idr=%ld(mr=%g) id1=%ld(m1=%g):id2=%ld(m2=%g) (r=%g) typer=%d type1=%d type2=%d\n",
+    parafprintf(semergedisruptfile, "t=%g disrupt2 idr=%ld(mr=%g) id1=%ld(m1=%g):id2=%ld(m2=%g) (r=%g) typer=%d type1=%d type2=%d radr[RSUN]=%g, rad1[RSUN]=%g, rad2[RSUN]=%g\n",
       TotalTime,
       star[knew].id, star[knew].se_mt,
       binary[kb].id1, binary[kb].m1 * units.mstar / FB_CONST_MSUN,
       binary[kb].id2, binary[kb].m2 * units.mstar / FB_CONST_MSUN,
-      star_r[get_global_idx(k)], star[knew].se_k, kprev0, kprev1);
+		star_r[get_global_idx(k)], star[knew].se_k, kprev0, kprev1,
+		star[knew].rad * units.l / RSUN, binary[kb].rad1 * units.l / RSUN, binary[kb].rad2 * units.l / RSUN);
 
     destroy_obj(k);
     if (sqrt(vs[1]*vs[1]+vs[2]*vs[2]+vs[3]*vs[3]) != 0.0) {
