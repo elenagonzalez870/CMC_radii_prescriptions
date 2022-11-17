@@ -258,6 +258,18 @@ void sscollision_do(long k, long kp, double rperimax, double w[4], double W, dou
 				star[k].rad*units.l/RSUN, star[kp].rad*units.l/RSUN,
                     b*units.l/RSUN,W*units.l/units.t/1.e5, rperi*units.l/RSUN, collisions_multiple_hold);
 
+			rho0_c = (star[k].se_mc * units.mstar / FB_CONST_MSUN ) / ((4/3)* PI * (star[k].se_rc * units.l / RSUN )**3)
+			rho1_c = (star[kp].se_mc * units.mstar / FB_CONST_MSUN ) / ((4/3)* PI * (star[kp].se_rc * units.l / RSUN )**3)
+			rho0_env = (star[k].se_menv * units.mstar / FB_CONST_MSUN ) / ((4/3)* PI * (star[k].se_renv * units.l / RSUN )**3)
+			rho1_env = (star[kp].se_menv * units.mstar / FB_CONST_MSUN ) / ((4/3)* PI * (star[kp].se_renv * units.l / RSUN )**3)
+			rhor_c = (star[knew].se_mc * units.mstar / FB_CONST_MSUN ) / ((4/3)* PI * (star[knew].se_rc * units.l / RSUN )**3)
+			rhor_env = (star[knew].se_menv * units.mstar / FB_CONST_MSUN ) / ((4/3)* PI * (star[knew].se_renv * units.l / RSUN )**3)
+
+			/*Elena: Creating a file with additional collision information */
+			parafprintf(morecollfile, "%g single-single %ld %ld %g %g %g %g %g %g %g %g %d %d %ld %g %g %g %g %d %g %g\n",
+				    TotalTime, star[k].id, star[kp].id, mass_k * units.mstar / FB_CONST_MSUN, mass_kp * units.mstar / FB_CONST_MSUN,
+				    star[k].rad*units.l/RSUN, star[kp].rad*units.l/RSUN,rho0_c,rho1_c,rho0_env, rho1_env, star[k].se_k, star[kp].se_k,
+				    star[knew].id, star_m[get_global_idx(knew)] * units.mstar / FB_CONST_MSUN, star[knew].rad*units.l/RSUN, rhor_c, rhor_env, star[knew].se_k, W*units.l/units.t/1.e5, rperi*units.l/RSUN);
                         /* destroy two progenitors */
                         destroy_obj(k);
                         destroy_obj(kp);
@@ -436,6 +448,12 @@ void sscollision_do(long k, long kp, double rperimax, double w[4], double W, dou
 			        star[k].rad*units.l/RSUN, star[kp].rad*units.l/RSUN,
                     b*units.l/RSUN,W*units.l/units.t/1.e5,  rperi*units.l/RSUN, collisions_multiple_hold);
 
+			/*Elena: Creating a file with additional collision information */
+			parafprintf(morecollfile, "%g single-single %ld %ld %g %g %g %g %g %g %g %g %d %d %ld %g %g %g %g %d %g %g\n",
+				    TotalTime, star[k].id, star[kp].id, mass_k * units.mstar / FB_CONST_MSUN, mass_kp * units.mstar / FB_CONST_MSUN,
+				    star[k].rad*units.l/RSUN, star[kp].rad*units.l/RSUN,rho0_c,rho1_c,rho0_env, rho1_env, star[k].se_k, star[kp].se_k,
+				    star[knew].id, star_m[get_global_idx(knew)] * units.mstar / FB_CONST_MSUN, star[knew].rad*units.l/RSUN, rhor_c, rhor_env, star[knew].se_k, W*units.l/units.t/1.e5, rperi*units.l/RSUN);
+
                         /* destroy two progenitors */
                         destroy_obj(k);
                         destroy_obj(kp);
@@ -588,6 +606,12 @@ void sscollision_do(long k, long kp, double rperimax, double w[4], double W, dou
                                 star_r[get_global_idx(knew)], star[knew].se_k, star[k].se_k, star[kp].se_k,
 				star[k].rad*units.l/RSUN, star[kp].rad*units.l/RSUN,
                     b*units.l/RSUN,W*units.l/units.t/1.e5, rperi*units.l/RSUN, collisions_multiple_hold);
+
+			/*Elena: Creating a file with additional collision information */
+			parafprintf(morecollfile, "%g single-single %ld %ld %g %g %g %g %g %g %g %g %d %d %ld %g %g %g %g %d %g %g\n",
+				    TotalTime, star[k].id, star[kp].id, mass_k * units.mstar / FB_CONST_MSUN, mass_kp * units.mstar / FB_CONST_MSUN,
+				    star[k].rad*units.l/RSUN, star[kp].rad*units.l/RSUN,rho0_c,rho1_c,rho0_env, rho1_env, star[k].se_k, star[kp].se_k,
+				    star[knew].id, star_m[get_global_idx(knew)] * units.mstar / FB_CONST_MSUN, star[knew].rad*units.l/RSUN, rhor_c, rhor_env, star[knew].se_k, W*units.l/units.t/1.e5, rperi*units.l/RSUN);
 
                         /* destroy two progenitors */
                         destroy_obj(k);
@@ -785,6 +809,12 @@ void sscollision_do(long k, long kp, double rperimax, double w[4], double W, dou
 	                star[k].rad*units.l/RSUN, star[kp].rad*units.l/RSUN,
             b*units.l/RSUN,W*units.l/units.t/1.e5, rperi*units.l/RSUN, collisions_multiple);
 
+		/*Elena: Creating a file with additional collision information */
+			parafprintf(morecollfile, "%g single-single %ld %ld %g %g %g %g %g %g %g %g %d %d %ld %g %g %g %g %d %g %g\n",
+				    TotalTime, star[k].id, star[kp].id, mass_k * units.mstar / FB_CONST_MSUN, mass_kp * units.mstar / FB_CONST_MSUN,
+				    star[k].rad*units.l/RSUN, star[kp].rad*units.l/RSUN,rho0_c,rho1_c,rho0_env, rho1_env, star[k].se_k, star[kp].se_k,
+				    star[knew].id, star_m[get_global_idx(knew)] * units.mstar / FB_CONST_MSUN, star[knew].rad*units.l/RSUN, rhor_c, rhor_env, star[knew].se_k, W*units.l/units.t/1.e5, rperi*units.l/RSUN);
+
                 /* destroy two progenitors */
                 destroy_obj(k);
                 destroy_obj(kp);
@@ -885,6 +915,12 @@ void sscollision_do(long k, long kp, double rperimax, double w[4], double W, dou
                                         star_r[get_global_idx(knew)], star[knew].se_k, star[k].se_k, star[kp].se_k,
 			                star[k].rad*units.l/RSUN, star[kp].rad*units.l/RSUN,
                             b*units.l/RSUN,W*units.l/units.t/1.e5, rperi*units.l/RSUN, rperi/(star[k].rad+star[kp].rad));
+
+				/*Elena: Creating a file with additional collision information */
+			parafprintf(morecollfile, "%g single-single %ld %ld %g %g %g %g %g %g %g %g %d %d %ld %g %g %g %g %d %g %g\n",
+				    TotalTime, star[k].id, star[kp].id, mass_k * units.mstar / FB_CONST_MSUN, mass_kp * units.mstar / FB_CONST_MSUN,
+				    star[k].rad*units.l/RSUN, star[kp].rad*units.l/RSUN,rho0_c,rho1_c,rho0_env, rho1_env, star[k].se_k, star[kp].se_k,
+				    star[knew].id, star_m[get_global_idx(knew)] * units.mstar / FB_CONST_MSUN, star[knew].rad*units.l/RSUN, rhor_c, rhor_env, star[knew].se_k, W*units.l/units.t/1.e5, rperi*units.l/RSUN);
 
                                 /* destroy two progenitors */
                                 destroy_obj(k);
