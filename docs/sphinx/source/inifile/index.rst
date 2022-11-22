@@ -397,6 +397,15 @@ OUTPUT OPTIONS
 
                                  **WRITE_MOREPULSAR_INFO = 0**
 
+``WRITE_MORECOLL_INFO``        Write a ton more information collision output
+
+
+                                    ``0`` : Off
+
+                                    ``1`` : On
+
+                                 **WRITE_MORECOLL_INFO = 0**
+
 
 ``PULSAR_DELTACOUNT``            Pulsar output interval in time steps
 

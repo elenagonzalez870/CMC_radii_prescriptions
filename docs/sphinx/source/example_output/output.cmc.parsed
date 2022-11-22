@@ -83,6 +83,8 @@ WRITE_BH_INFO   1
 WRITE_PULSAR_INFO   1
 # Write out information about neutron stars (0=off, 1=on)
 WRITE_MOREPULSAR_INFO   0
+# Write out information about collisions (0=off, 1=on)
+WRITE_MORECOLL_INFO   0
 # Pulsar output interval in time steps
 PULSAR_DELTACOUNT   1000
 # Write out information about stellar evolution for each single and binary star, (0=off, 1=on)
