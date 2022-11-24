@@ -1081,11 +1081,11 @@ typedef struct{
  * @brief Write out information about neutron stars (0=off, 1=on)
  * */
         int WRITE_MOREPULSAR_INFO;
-#define WRITE_MORECOLL_INFO "Write out information about stellar collisions (0=off, 1=on)"
+#define PARAMDOC_WRITE_MORECOLL_INFO "Write out information about stellar collisions (0=off, 1=on)"
 /**
  *  * @brief Write out information about stellar collisions(0=off, 1=on)
- *   * */
-        int WRITE_MORECOLL_INFO;
+ *  */
+	int WRITE_MORECOLL_INFO;
 #define PARAMDOC_BHNS_TDE "Treat BH(NS)--MS TDEs in TDE vs direct collision limit (1=TDE, 0=coll)"
 /**
  * @brief Treat BH(NS)--MS TDEs in TDE vs direct collision limit (1=TDE, 0=coll)
@@ -1774,6 +1774,7 @@ void post_sort_comm();
 void findIndices( long N, int blkSize, int i, int* begin, int* end );
 void pulsar_write(long k, double kick);
 void write_morepulsar(long i);
+void write_morecoll(long i);
 void findLimits( long N, int blkSize );
 int findProcForIndex( int j );
 void set_rng_states();

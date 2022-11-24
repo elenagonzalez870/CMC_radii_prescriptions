@@ -1062,7 +1062,7 @@ double binint_get_env_mass(long k, long kp, long id)
 	/* first look at k */
 	if (star[k].binind == 0) {
 		if (star[k].id == id) {
-			return(star[k].se_menv;
+			return(star[k].se_menv);
 		}
 	} else {
 		if (binary[star[k].binind].id1 == id) {
@@ -1105,7 +1105,7 @@ double binint_get_core_radii(long k, long kp, long id)
 	/* first look at k */
 	if (star[k].binind == 0) {
 		if (star[k].id == id) {
-			return(star[k].rc);
+			return(star[k].se_rc);
 		}
 	} else {
 		if (binary[star[k].binind].id1 == id) {
@@ -1118,7 +1118,7 @@ double binint_get_core_radii(long k, long kp, long id)
 	/* then at kp */
 	if (star[kp].binind == 0) {
 		if (star[kp].id == id) {
-			return(star[kp].rc);
+			return(star[kp].se_rc);
 		}
 	} else {
 		if (binary[star[kp].binind].id1 == id) {
@@ -1148,7 +1148,7 @@ double binint_get_env_radii(long k, long kp, long id)
 	/* first look at k */
 	if (star[k].binind == 0) {
 		if (star[k].id == id) {
-			return(star[k].renv);
+			return(star[k].se_renv);
 		}
 	} else {
 		if (binary[star[k].binind].id1 == id) {
@@ -1161,7 +1161,7 @@ double binint_get_env_radii(long k, long kp, long id)
 	/* then at kp */
 	if (star[kp].binind == 0) {
 		if (star[kp].id == id) {
-			return(star[kp].radc);
+			return(star[kp].se_renv);
 		}
 	} else {
 		if (binary[star[kp].binind].id1 == id) {
@@ -1590,26 +1590,25 @@ void binint_log_morecollision(const char interaction_type[], long remnant_id,
 			  double remnant_mass, double remnant_radius, long remnant_type, double remnant_mc, double remnant_menv, double remnant_rc, 				double remnant_renv, fb_obj_t obj, long k, long kp, double W, double rperi)
 {
 	
-	m0_core = binint_get_core_mass(k, kp, obj.id[0])
-	m1_core = binint_get_core_mass(k, kp, obj.id[1])
-	m0_env = binint_get_env_mass(k, kp, obj.id[0])
-	m1_env = binint_get_env_mass(k, kp, obj.id[1])
+	double m0_core = binint_get_core_mass(k, kp, obj.id[0]);
+	double m1_core = binint_get_core_mass(k, kp, obj.id[1]);
+	double m0_env = binint_get_env_mass(k, kp, obj.id[0]);
+	double m1_env = binint_get_env_mass(k, kp, obj.id[1]);
 	
-	r0_core = binint_get_core_radii(k, kp, obj.id[0])
-	r1_core = binint_get_core_radii(k, kp, obj.id[1])
-	r0_env = binint_get_env_radii(k, kp, obj.id[0])
-	r1_env = binint_get_env_radii(k, kp, obj.id[1])
+	double r0_core = binint_get_core_radii(k, kp, obj.id[0]);
+	double r1_core = binint_get_core_radii(k, kp, obj.id[1]);
+	double r0_env = binint_get_env_radii(k, kp, obj.id[0]);
+	double r1_env = binint_get_env_radii(k, kp, obj.id[1]);
 	
 	
-	rho0_c = (m0_core * units.mstar / FB_CONST_MSUN ) / ((4/3)* PI * (r0_core * units.l / RSUN )**3)
-	rho1_c = (m1_core * units.mstar / FB_CONST_MSUN ) / ((4/3)* PI * (r1_core * units.l / RSUN )**3)
-	rho0_env = (m0_env * units.mstar / FB_CONST_MSUN ) / ((4/3)* PI * (r0_env * units.l / RSUN )**3)
-	rho1_env = (m1_env * units.mstar / FB_CONST_MSUN ) / ((4/3)* PI * (r1_env * units.l / RSUN )**3)
-	
-	rhor_c = (remnant_mc * units.mstar / FB_CONST_MSUN ) / ((4/3)* PI * (remnant_rc * units.l / RSUN )**3)
-	rhor_env = (remnant_menv * units.mstar / FB_CONST_MSUN ) / ((4/3)* PI * (remnant_renv * units.l / RSUN )**3)
+	double rho0_c = (m0_core * units.mstar / FB_CONST_MSUN ) / ((4/3)* PI * pow((r0_core * units.l / RSUN ),3));
+	double rho1_c = (m1_core * units.mstar / FB_CONST_MSUN ) / ((4/3)* PI * pow((r1_core * units.l / RSUN ),3));
+	double rho0_env = (m0_env * units.mstar / FB_CONST_MSUN ) / ((4/3)* PI * pow((r0_env * units.l / RSUN ),3));
+	double rho1_env = (m1_env * units.mstar / FB_CONST_MSUN ) / ((4/3)* PI * pow((r1_env * units.l / RSUN ),3));
+	double rhor_c = (remnant_mc * units.mstar / FB_CONST_MSUN ) / ((4/3)* PI * pow((remnant_rc * units.l / RSUN ),3));
+	double rhor_env = (remnant_menv * units.mstar / FB_CONST_MSUN ) / ((4/3)* PI * pow((remnant_renv* units.l / RSUN ),3));
 
-	parafprintf(morecollisionfile, "%g %s %ld %ld %g %g %g %g %g %g %g %g %d %d %ld %g %g %g %g %d %g %g\n",
+	parafprintf(morecollfile, "%g %s %ld %ld %g %g %g %g %g %g %g %g %d %d %ld %g %g %g %g %d %g %g\n",
 				    TotalTime, interaction_type, obj.id[0], obj.id[1], 
 				    binint_get_mass(k, kp, obj.id[0]) * units.mstar / FB_CONST_MSUN, 
 				    binint_get_mass(k, kp, obj.id[1]) * units.mstar / FB_CONST_MSUN,
@@ -1619,7 +1618,7 @@ void binint_log_morecollision(const char interaction_type[], long remnant_id,
 				    binint_get_startype(k,kp, obj.id[0]), binint_get_startype(k,kp, obj.id[1]), 
 				    remnant_id, remnant_mass * units.mstar / FB_CONST_MSUN, remnant_radius * units.l/RSUN, rhor_c, rhor_env, 					    remnant_type, W*units.l/units.t/1.e5, rperi*units.l/RSUN);
 				    
-
+}
 
 /**
 * @brief do binary interaction (bin-bin or bin-single)
@@ -1947,16 +1946,19 @@ void binint_do(long k, long kp, double rperi, double w[4], double W, double rcm,
 						star[knew].id, star_m[get_global_idx(knew)],
 						star_r[get_global_idx(knew)],
 						*(hier.obj[i]), k, kp, star[knew].se_k);
+						
+					if (WRITE_MORECOLL_INFO  && hier.obj[i]-> ncoll < 3){
+						/*Elena: Creating a file with additional collision information */
+						binint_log_morecollision(isbinbin?"binary-binary":"binary-single", star[knew].id,
+			  			star_m[get_global_idx(knew)], star[knew].rad, star[knew].se_k, star[knew].se_mc, 
+			  			star[knew].se_menv, star[knew].se_rc,star[knew].se_renv,*(hier.obj[i]),k,kp, W, rperi);
+			  			}
+
 				}
 				
 				star[knew].rad = star[knew].se_radius * RSUN / units.l;
 				
-				if (hier.obj[i]-> ncoll < 3){
-						/*Elena: Creating a file with additional collision information */
-						binint_log_morecollision(isbinbin?"binary-binary":"binary-single", star[knew].id,
-			  			star_m[get_global_idx(knew)], star[knew].rad, star[knew].se_k, star[knew].se_mc, 
-			  			star[knew].se_menv, star[knew].se_rc,star[knew].se_renv, fb_obj_t obj,k,kp, W, rperi)}
-{
+				
 
 
 				/* track binding energy */
@@ -2056,11 +2058,11 @@ void binint_do(long k, long kp, double rperi, double w[4], double W, double rcm,
 								knew, star[knew].binind, binary[star[knew].binind].bse_kw[0], 
 								binary[star[knew].binind].bse_kw[1]);
 					}
-					if (hier.obj[i]-> ncoll < 3){
+					if (WRITE_MORECOLL_INFO  && hier.obj[i]-> ncoll < 3){
 						/*Elena: Creating a file with additional collision information */
 						binint_log_morecollision(isbinbin?"binary-binary":"binary-single", star[knew].id,
 			  			star_m[get_global_idx(knew)], star[knew].rad, star[knew].se_k, star[knew].se_mc, 
-			  			star[knew].se_menv, star[knew].se_rc,star[knew].se_renv, fb_obj_t obj,k,kp, W, rperi)}
+			  			star[knew].se_menv, star[knew].se_rc,star[knew].se_renv,*(hier.obj[i]),k,kp, W, rperi);}
 
 				}
 				if (hier.obj[i]->obj[1]->ncoll == 1) {
@@ -2143,11 +2145,11 @@ void binint_do(long k, long kp, double rperi, double w[4], double W, double rcm,
 								knew, star[knew].binind, binary[star[knew].binind].bse_kw[0],
 								binary[star[knew].binind].bse_kw[1]);
 								
-					if (hier.obj[i]-> ncoll < 3){
+					if (WRITE_MORECOLL_INFO  && hier.obj[i]-> ncoll < 3){
 						/*Elena: Creating a file with additional collision information */
 						binint_log_morecollision(isbinbin?"binary-binary":"binary-single", star[knew].id,
 			  			star_m[get_global_idx(knew)], star[knew].rad, star[knew].se_k, star[knew].se_mc, 
-			  			star[knew].se_menv, star[knew].se_rc,star[knew].se_renv, fb_obj_t obj,k,kp, W, rperi)}
+			  			star[knew].se_menv, star[knew].se_rc,star[knew].se_renv,*(hier.obj[i]),k,kp, W, rperi);}
 				}
 				
 				star_m[get_global_idx(knew)] = binary[star[knew].binind].m1 + binary[star[knew].binind].m2;
@@ -2268,11 +2270,11 @@ void binint_do(long k, long kp, double rperi, double w[4], double W, double rcm,
 						star_r[get_global_idx(knewp)],
 						*(hier.obj[i]->obj[sid]), k, kp, star[knewp].se_k);
 						
-					if (hier.obj[i]-> ncoll < 3){
+					if (WRITE_MORECOLL_INFO  && hier.obj[i]-> ncoll < 3){
 						/*Elena: Creating a file with additional collision information */
 						binint_log_morecollision(isbinbin?"binary-binary":"binary-single", star[knew].id,
 			  			star_m[get_global_idx(knew)], star[knew].rad, star[knew].se_k, star[knew].se_mc, 
-			  			star[knew].se_menv, star[knew].se_rc,star[knew].se_renv, fb_obj_t obj,k,kp, W, rperi)}	
+			  			star[knew].se_menv, star[knew].se_rc,star[knew].se_renv,*(hier.obj[i]),k,kp, W, rperi);}	
 		
 				}
 				/* radius */
@@ -2369,11 +2371,11 @@ void binint_do(long k, long kp, double rperi, double w[4], double W, double rcm,
 						star_r[get_global_idx(knew)],
 						*(hier.obj[i]->obj[bid]->obj[0]), k, kp, binary[star[knew].binind].bse_kw[0]);
 					
-					if (hier.obj[i]-> ncoll < 3){
+					if (WRITE_MORECOLL_INFO  && hier.obj[i]-> ncoll < 3){
 						/*Elena: Creating a file with additional collision information */
 						binint_log_morecollision(isbinbin?"binary-binary":"binary-single", star[knew].id,
 			  			star_m[get_global_idx(knew)], star[knew].rad, star[knew].se_k, star[knew].se_mc, 
-			  			star[knew].se_menv, star[knew].se_rc,star[knew].se_renv, fb_obj_t obj,k,kp, W, rperi)}
+			  			star[knew].se_menv, star[knew].se_rc,star[knew].se_renv,*(hier.obj[i]),k,kp, W, rperi);}
 			  				
 				}
 				if (hier.obj[i]->obj[bid]->obj[1]->ncoll == 1) {
@@ -2445,11 +2447,11 @@ void binint_do(long k, long kp, double rperi, double w[4], double W, double rcm,
 						star_r[get_global_idx(knew)],
 						*(hier.obj[i]->obj[bid]->obj[1]), k, kp, binary[star[knew].binind].bse_kw[1]);
 						
-					if (hier.obj[i]-> ncoll < 3){
+					if (WRITE_MORECOLL_INFO  && hier.obj[i]-> ncoll < 3){
 						/*Elena: Creating a file with additional collision information */
 						binint_log_morecollision(isbinbin?"binary-binary":"binary-single", star[knew].id,
 			  			star_m[get_global_idx(knew)], star[knew].rad, star[knew].se_k, star[knew].se_mc, 
-			  			star[knew].se_menv, star[knew].se_rc,star[knew].se_renv, fb_obj_t obj,k,kp, W, rperi)}	
+			  			star[knew].se_menv, star[knew].se_rc,star[knew].se_renv,*(hier.obj[i]),k,kp, W, rperi);}	
 						
 				}
 

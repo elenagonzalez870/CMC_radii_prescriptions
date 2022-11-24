@@ -708,10 +708,10 @@ void PrintParaFileOutput(void)
     if (WRITE_MOREPULSAR_INFO)
         mpi_para_file_write(mpi_morepulsarfile_wrbuf, &mpi_morepulsarfile_len, &mpi_morepulsarfile_ofst_total, &mpi_morepulsarfile);
 
-/*Elena */   
-    if (WRITE_MORECOLL_INFO)
-        mpi_para_file_write(mpi_morecorefile_wrbuf, &mpi_morecollfile_len, &mpi_morecollfile_ofst_total, &mpi_morecollfile);   
-    
+/*Elena  */ 
+    if (WRITE_MORECOLL_INFO){
+        mpi_para_file_write(mpi_morecollfile_wrbuf, &mpi_morecollfile_len, &mpi_morecollfile_ofst_total, &mpi_morecollfile);  
+    }
 /* Meagan's 3bb files */
     if (WRITE_BH_INFO){
         mpi_para_file_write(mpi_newbhfile_wrbuf, &mpi_newbhfile_len, &mpi_newbhfile_ofst_total, &mpi_newbhfile);
@@ -1340,6 +1340,10 @@ if(myid==0) {
                                 PRINT_PARSED(PARAMDOC_WRITE_MOREPULSAR_INFO);
                                 sscanf(values, "%i", &WRITE_MOREPULSAR_INFO);
                                 parsed.WRITE_MOREPULSAR_INFO = 1;
+                        } else if (strcmp(parameter_name, "WRITE_MORECOLL_INFO")== 0) {
+                                PRINT_PARSED(PARAMDOC_WRITE_MORECOLL_INFO);
+                                sscanf(values, "%i", &WRITE_MORECOLL_INFO);
+                                parsed.WRITE_MORECOLL_INFO = 1;
 			} else if (strcmp(parameter_name, "CALCULATE10")== 0) {
 				PRINT_PARSED(PARAMDOC_CALCULATE10);
 				sscanf(values, "%i", &CALCULATE10);
@@ -1643,6 +1647,7 @@ if(myid==0) {
     CHECK_PARSED(WRITE_EXTRA_CORE_INFO, 0, PARAMDOC_WRITE_EXTRA_CORE_INFO);
     CHECK_PARSED(WRITE_PULSAR_INFO, 0, PARAMDOC_WRITE_PULSAR_INFO);
     CHECK_PARSED(WRITE_MOREPULSAR_INFO, 0, PARAMDOC_WRITE_MOREPULSAR_INFO);
+    CHECK_PARSED(WRITE_MORECOLL_INFO, 0, PARAMDOC_WRITE_MORECOLL_INFO);
 	CHECK_PARSED(CALCULATE10, 0, PARAMDOC_CALCULATE10);
 	CHECK_PARSED(WIND_FACTOR, 1.0, PARAMDOC_WIND_FACTOR);
 	CHECK_PARSED(TIDAL_TREATMENT, 0, PARAMDOC_TIDAL_TREATMENT);
@@ -2427,7 +2432,8 @@ MPI: In the parallel version, IO is done in the following way. Some files requir
         sprintf(outfile, "%s.morecoll.dat", outprefix);
         MPI_File_open(MPI_COMM_WORLD, outfile, MPI_MODE_CREATE | MPI_MODE_WRONLY, MPI_INFO_NULL, &mpi_morecollfile);
         if(RESTART_TCOUNT <= 0)
-}	
+        	MPI_File_set_size(mpi_morecollfile, 0);
+    }	
 //MPI: Headers are written out only by the root node.
    // print header
     if(RESTART_TCOUNT <= 0){
@@ -2476,7 +2482,7 @@ MPI: In the parallel version, IO is done in the following way. Some files requir
                 /* print header */ //Elena
                 if (WRITE_MORECOLL_INFO)
                         pararootfprintf(morecollfile,"#1:TotalTime #2:collision-type #3:id0 #4:id1 #5:m0[MSUN] #6:m1[MSUN] #7:rad1[RSUN] #8:rad2[RSUN] #9:rho0_c[MSUN/RSUN^3] #10:rho1_c[MSUN/RSUN^3] #11:rho0_env[MSUN/RSUN^3] #12:rho1_env[MSUN/RSUN^3] #13:kstar0 #14:kstar1 #15:idr #16:mr[MSUN] #17:radr[RSUN] #18:rhor_c[MSUN/RSUN^3] #19:rhor_env[MSUN/RSUN^3] #20:kstarr, #21:vinf[km/s], #22:rperi\n");
-	} /*if(RESTART_TCOUNT == 0)*/
+	}/*if(RESTART_TCOUNT == 0)*/
 
 }
 
@@ -2560,10 +2566,10 @@ void close_node_buffers(void)
     if (WRITE_MOREPULSAR_INFO){
     	fclose(morepulsarfile);
     }
-    /*Elena */
+    //Elena 
     if (WRITE_MORECOLL_INFO){
         fclose(morecollfile);
-	}
+    }   
 }
 
 
@@ -2603,6 +2609,7 @@ void mpi_close_node_buffers(void)
     if (WRITE_MOREPULSAR_INFO){
     	MPI_File_close(&mpi_morepulsarfile);
     }
+   
     //Elena
     if (WRITE_MORECOLL_INFO){
         MPI_File_close(&mpi_morecollfile);
@@ -3586,6 +3593,7 @@ typedef struct{
     long long s_mpi_relaxationfile_len;
     long long s_mpi_pulsarfile_len;
     long long s_mpi_morepulsarfile_len;
+    long long s_mpi_morecollfile_len;
     long long s_mpi_triplefile_len;
     long long s_mpi_bhmergerfile_len;
     long long s_mpi_logfile_ofst_total;
@@ -3599,6 +3607,7 @@ typedef struct{
     long long s_mpi_relaxationfile_ofst_total;
     long long s_mpi_pulsarfile_ofst_total;
     long long s_mpi_morepulsarfile_ofst_total;
+    long long s_mpi_morecollfile_ofst_total;
     long long s_mpi_triplefile_ofst_total;
     long long s_mpi_bhmergerfile_ofst_total;
 
@@ -3641,6 +3650,7 @@ void save_global_vars(restart_struct_t *rest){
 	rest->s_mpi_relaxationfile_len             =mpi_relaxationfile_len;
 	rest->s_mpi_pulsarfile_len                 =mpi_pulsarfile_len;
         rest->s_mpi_morepulsarfile_len             =mpi_morepulsarfile_len;
+        rest->s_mpi_morecollfile_len               =mpi_morecollfile_len;        
         rest->s_mpi_triplefile_len                 =mpi_triplefile_len;
 	rest->s_mpi_bhmergerfile_len               =mpi_bhmergerfile_len;
 	rest->s_mpi_logfile_ofst_total             =mpi_logfile_ofst_total;
@@ -3654,6 +3664,7 @@ void save_global_vars(restart_struct_t *rest){
 	rest->s_mpi_relaxationfile_ofst_total      =mpi_relaxationfile_ofst_total;
 	rest->s_mpi_pulsarfile_ofst_total          =mpi_pulsarfile_ofst_total;
         rest->s_mpi_morepulsarfile_ofst_total      =mpi_morepulsarfile_ofst_total;
+        rest->s_mpi_morecollfile_len               =mpi_morecollfile_len;        
         rest->s_mpi_triplefile_ofst_total          =mpi_triplefile_ofst_total;
 	rest->s_mpi_bhmergerfile_ofst_total        =mpi_bhmergerfile_ofst_total;
 
@@ -3696,6 +3707,7 @@ void load_global_vars(restart_struct_t *rest){
 	mpi_relaxationfile_len             =rest->s_mpi_relaxationfile_len;
 	mpi_pulsarfile_len                 =rest->s_mpi_pulsarfile_len;
         mpi_morepulsarfile_len             =rest->s_mpi_morepulsarfile_len;
+        mpi_morecollfile_len               =rest->s_mpi_morecollfile_len;
         mpi_triplefile_len                 =rest->s_mpi_triplefile_len;
 	mpi_bhmergerfile_len               =rest->s_mpi_bhmergerfile_len;
 	mpi_logfile_ofst_total             =rest->s_mpi_logfile_ofst_total;
@@ -3709,6 +3721,7 @@ void load_global_vars(restart_struct_t *rest){
 	mpi_relaxationfile_ofst_total      =rest->s_mpi_relaxationfile_ofst_total;
 	mpi_pulsarfile_ofst_total          =rest->s_mpi_pulsarfile_ofst_total;
         mpi_morepulsarfile_ofst_total      =rest->s_mpi_morepulsarfile_ofst_total;
+        mpi_morecollfile_ofst_total        =rest->s_mpi_morecollfile_ofst_total;        
         mpi_triplefile_ofst_total          =rest->s_mpi_triplefile_ofst_total;
 	mpi_bhmergerfile_ofst_total        =rest->s_mpi_bhmergerfile_ofst_total;
 
@@ -3877,6 +3890,9 @@ void load_restart_file(){
 	if(WRITE_MOREPULSAR_INFO){
              MPI_File_seek(mpi_morepulsarfile,mpi_morepulsarfile_ofst_total,MPI_SEEK_SET);
         }
+        if(WRITE_MORECOLL_INFO){
+             MPI_File_seek(mpi_morecollfile,mpi_morecollfile_ofst_total,MPI_SEEK_SET);
+        }
     } else{
         mpi_logfile_len=0;
         mpi_escfile_len=0;
@@ -3888,6 +3904,7 @@ void load_restart_file(){
         mpi_relaxationfile_len=0;
         mpi_pulsarfile_len=0;
 	mpi_morepulsarfile_len=0;
+	mpi_morecollfile_len=0;
 	mpi_triplefile_len=0;
 	mpi_newbhfile_len=0;
 	mpi_bhmergerfile_len=0;
@@ -3903,6 +3920,7 @@ void load_restart_file(){
         mpi_relaxationfile_ofst_total=0;
         mpi_pulsarfile_ofst_total=0;
 	mpi_morepulsarfile_ofst_total=0;
+	mpi_morecollfile_ofst_total=0;
 	mpi_triplefile_ofst_total=0;
 	mpi_newbhfile_ofst_total=0;
 	mpi_bhmergerfile_ofst_total=0;

@@ -921,7 +921,7 @@ void handle_bse_outcome(long k, long kb, double *vs, double tphysf, int kprev0, 
       TotalTime,
       star[knew].id, star[knew].se_mt, 
       star[knewp].id, star_m[get_global_idx(knewp)] * units.mstar / FB_CONST_MSUN,
-		star_r[get_global_idx(k)], kprev0, kprev1, binary[kb].rad1 * units.l / RSUN,binary[kb].rad2 * units.l / RSUN]);
+		star_r[get_global_idx(k)], kprev0, kprev1, binary[kb].rad1 * units.l / RSUN, binary[kb].rad2 * units.l / RSUN);
 
     destroy_obj(k);
     /* in this case vs is relative speed between stars at infinity */
