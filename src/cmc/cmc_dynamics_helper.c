@@ -1024,8 +1024,10 @@ double binint_get_core_mass(long k, long kp, long id)
 	} else {
 		if (binary[star[k].binind].id1 == id) {
 			return(binary[star[k].binind].bse_massc[0]);
+			
 		} else if (binary[star[k].binind].id2 == id) {
 			return(binary[star[k].binind].bse_massc[1]);
+			
 		}
 	}
 	
@@ -1039,6 +1041,7 @@ double binint_get_core_mass(long k, long kp, long id)
 			return(binary[star[kp].binind].bse_massc[0]);
 		} else if (binary[star[kp].binind].id2 == id) {
 			return(binary[star[kp].binind].bse_massc[1]);
+			
 		}
 	}
 	
@@ -1590,7 +1593,7 @@ void binint_log_morecollision(const char interaction_type[], long remnant_id,
 			  double remnant_mass, double remnant_radius, long remnant_type, double remnant_mc, double remnant_menv, double remnant_rc, 				double remnant_renv, fb_obj_t obj, long k, long kp, double W, double rperi)
 {
 
-	/*remnant radii and masses are already in the right units*/
+	/*remnant radii are already in the right units*/
 	
 	double m0_core = binint_get_core_mass(k, kp, obj.id[0]);
 	double m1_core = binint_get_core_mass(k, kp, obj.id[1]);
@@ -1617,7 +1620,13 @@ void binint_log_morecollision(const char interaction_type[], long remnant_id,
 	if(isnan(rho1_env)){rho1_env = -100;}
 	if(isnan(rhor_env)){rhor_env = -100;}
 	
+	// Elena: For some stars, COSMIC assigns default renv and menv values of of e-10, which makes my densities exactly 3.1831e-19. I will change these vales to output a -100 intead, since it is not physical //
 	
+
+	if(rho0_env >= 1.0e19){rho0_env = -100;}
+	if(rho1_env >= 1.0e19){rho1_env = -100;}
+	if(rhor_env >= 1.0e19){rhor_env = -100;}
+
 	parafprintf(morecollfile, "%g %s %ld %ld %g %g %g %g %g %g %g %g %d %d %ld %g %g %g %g %d %g %g\n",
 				    TotalTime, interaction_type, obj.id[0], obj.id[1], 
 				    binint_get_mass(k, kp, obj.id[0]) * units.mstar / FB_CONST_MSUN, 
@@ -1626,7 +1635,8 @@ void binint_log_morecollision(const char interaction_type[], long remnant_id,
 				    binint_get_radii(k, kp, obj.id[1]) * units.l/RSUN,
 				    rho0_c,rho1_c,rho0_env, rho1_env, 
 				    binint_get_startype(k,kp, obj.id[0]), binint_get_startype(k,kp, obj.id[1]), 
-				    remnant_id, remnant_mass, remnant_radius, rhor_c, rhor_env, 					    					    remnant_type, W*units.l/units.t/1.e5, rperi*units.l/RSUN);
+				    remnant_id, remnant_mass * units.mstar / FB_CONST_MSUN, remnant_radius*units.l/RSUN, 
+				    rhor_c, rhor_env,remnant_type, W*units.l/units.t/1.e5, rperi*units.l/RSUN);
 				    
 }
 
