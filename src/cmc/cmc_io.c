@@ -2481,7 +2481,7 @@ MPI: In the parallel version, IO is done in the following way. Some files requir
                		pararootfprintf(morepulsarfile,"#1:tcount #2:TotalTime #3:binflag #4:id0 #5:id1 #6:m0[MSUN] #7:m1[MSUN] #8:B0[G] #9:B1[G] #10:P0[sec] #11:P1[sec] #12:startype0 #13:startype1 #14:a[AU] #15:ecc #16:radrol0 #17:radrol1 #18:dmdt0 #19:dmdt1 #20:r #21:vr #22:vt #23:bacc0 #24:bacc1 #25:tacc0 #26:tacc1 #27:formation0 #28:formation1\n");
                 /* print header */ //Elena
                 if (WRITE_MORECOLL_INFO)
-                        pararootfprintf(morecollfile,"#1:TotalTime #2:collision-type #3:id0 #4:id1 #5:m0[MSUN] #6:m1[MSUN] #7:rad1[RSUN] #8:rad2[RSUN] #9:rho0_c[MSUN/RSUN^3] #10:rho1_c[MSUN/RSUN^3] #11:rho0_env[MSUN/RSUN^3] #12:rho1_env[MSUN/RSUN^3] #13:kstar0 #14:kstar1 #15:idr #16:mr[MSUN] #17:radr[RSUN] #18:rhor_c[MSUN/RSUN^3] #19:rhor_env[MSUN/RSUN^3] #20:kstarr, #21:vinf[km/s], #22:rperi\n");
+                        pararootfprintf(morecollfile,"#1:TotalTime #2:collision-type #3:id0 #4:id1 #5:m0[MSUN] #6:m1[MSUN] #7:rad1[RSUN] #8:rad2[RSUN] #9:rho0_c[MSUN/RSUN^3] #10:rho1_c[MSUN/RSUN^3] #11:rho0_env[MSUN/RSUN^3] #12:rho1_env[MSUN/RSUN^3] #13:kstar0 #14:kstar1 #15:idr #16:mr[MSUN] #17:radr[RSUN] #18:rhor_c[MSUN/RSUN^3] #19:rhor_env[MSUN/RSUN^3] #20:kstar, #21:vinf[km/s], #22:rperi\n");
 	}/*if(RESTART_TCOUNT == 0)*/
 
 }
