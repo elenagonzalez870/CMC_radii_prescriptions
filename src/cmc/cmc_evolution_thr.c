@@ -498,10 +498,10 @@ void tidally_strip_stars(void) {
 					/* logging */
 					parafprintf(escfile,
 							"%ld %.8g %.8g %.8g %.8g %.8g %.8g %.8g %.8g %.8g %.8g %.8g %.8g %ld ",
-							tcount, TotalTime, m * (units.m / clus.N_STAR) / MSUN,
+							tcount, TotalTime, star[i].m * (units.m / clus.N_STAR) / MSUN,
 							r, star[i].vr, star[i].vt, star[i].r_peri,
 							star[i].r_apo, Rtidal, phi_rtidal, phi_zero, star[i].E, star[i].J, star[i].id);
-
+					
 					if (star[i].binind) {
 						k = star[i].binind;
 						parafprintf(escfile, "1 %.8g %.8g %ld %ld %.8g %.8g ", 
@@ -550,8 +550,8 @@ void tidally_strip_stars(void) {
 				gierszalpha = 1.5 - 3.0 * pow(log(GAMMA * ((double) clus.N_STAR)) / ((double) clus.N_STAR), 0.25);
 
 				if (star[i].E > gierszalpha * phi_rtidal && star[i].rnew < 1000000) {
-					dprintf("tidally stripping star with E > phi rtidal: i=%ld id=%ld m=%g E=%g binind=%ld\n", i, star[i].id, m, star[i].E, star[i].binind); 
-					fprintf(stderr,"Elena: tidally stripping star with E > phi rtidal: i=%ld id=%ld m=%g E=%g binind=%ld\n", i, star[i].id, m, star[i].E, star[i].binind);
+					dprintf("tidally stripping star with E > phi rtidal: i=%ld id=%ld m=%g E=%g binind=%ld\n", i, star[i].id, m * (units.m / clus.N_STAR) / MSUN, star[i].E, star[i].binind); 
+					fprintf(stderr,"Elena: tidally stripping star with E > phi rtidal: i=%ld id=%ld m=%g E=%g binind=%ld m=%g units=%g\n", i, star[i].id, m*(units.m / clus.N_STAR) / MSUN, star[i].E, star[i].binind, star[i].m *(units.m / clus.N_STAR) / MSUN, (units.m / clus.N_STAR) / MSUN);
 					fprintf(stderr,"Elena: Gierz value %g\n", gierszalpha * phi_rtidal);
 					fprintf(stderr, "Elena: New stellar position %g\n", star[i].rnew);
 					star[i].rnew = SF_INFINITY;	/* tidally stripped star */
@@ -572,9 +572,10 @@ void tidally_strip_stars(void) {
 					Etidal += star[i].E * m / clus.N_STAR;
 
 					/* logging */
+					
 					parafprintf(escfile,
 							"%ld %.8g %.8g %.8g %.8g %.8g %.8g %.8g %.8g %.8g %.8g %.8g %.8g %ld ",
-							tcount, TotalTime, m * (units.m / clus.N_STAR) / MSUN,
+							tcount, TotalTime, star[i].m * (units.m / clus.N_STAR) / MSUN,
 							r, star[i].vr, star[i].vt, star[i].r_peri,
 							star[i].r_apo, Rtidal, phi_rtidal, phi_zero, star[i].E, star[i].J, star[i].id);
 
@@ -685,8 +686,9 @@ void remove_star(long j, double phi_rtidal, double phi_zero) {
 	Etidal += E * m / clus.N_STAR;
 
 	/* logging */
+	fprintf(stderr,"Elena: removing star with id=%ld m=%g m=%g\n", star[j].id, m * (units.m / clus.N_STAR) / MSUN, star[j].m * (units.m / clus.N_STAR) / MSUN);
 	parafprintf(escfile, "%ld %.8g %.8g ",
-		tcount, TotalTime, m * (units.m / clus.N_STAR) / MSUN);
+		tcount, TotalTime, star[j].m * (units.m / clus.N_STAR) / MSUN);
 	parafprintf(escfile, "%.8g %.8g %.8g ",
 		r, star[j].vr, star[j].vt);
 	parafprintf(escfile, "%.8g %.8g %.8g %.8g %.8g %.8g %.8g %ld ",

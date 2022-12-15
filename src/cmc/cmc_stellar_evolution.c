@@ -916,13 +916,16 @@ void handle_bse_outcome(long k, long kb, double *vs, double tphysf, int kprev0, 
     cp_binmemb_to_star(k, 0, knew);
     cp_binmemb_to_star(k, 1, knewp);
     DMse -= (star_m[get_global_idx(knew)] + star_m[get_global_idx(knewp)]) * madhoc;
+    
     /*Elena: Modifying output */
     parafprintf(semergedisruptfile, "t=%g disruptboth id1=%ld(m1=%g) id2=%ld(m2=%g) (r=%g) type1=%d type2=%d rad1[RSUN]=%g, rad2[RSUN]=%g\n",
       TotalTime,
-      star[knew].id, star[knew].se_mt, 
+      star[knew].id, star_m[get_global_idx(knew)] * units.mstar / FB_CONST_MSUN, 
       star[knewp].id, star_m[get_global_idx(knewp)] * units.mstar / FB_CONST_MSUN,
 		star_r[get_global_idx(k)], kprev0, kprev1, binary[kb].rad1 * units.l / RSUN, binary[kb].rad2 * units.l / RSUN);
-
+		
+    fprintf(stderr,"Elena: disruptboth case mt=%g , m0=%g, units=%g bin0=%g bin1=%g\n", star[knew].se_mt, star_m[get_global_idx(knew)] * units.mstar / FB_CONST_MSUN, units.mstar / FB_CONST_MSUN, binary[kb].m1 * units.mstar / MSUN, binary[kb].m2 * units.mstar / MSUN);
+    
     destroy_obj(k);
     /* in this case vs is relative speed between stars at infinity */
 /*    star[knew].vr += star[knewp].m/(star[knew].m+star[knewp].m) * vs[2] * 1.0e5 / (units.l/units.t);
