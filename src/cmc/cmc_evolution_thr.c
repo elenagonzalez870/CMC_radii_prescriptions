@@ -498,7 +498,7 @@ void tidally_strip_stars(void) {
 					/* logging */
 					parafprintf(escfile,
 							"%ld %.8g %.8g %.8g %.8g %.8g %.8g %.8g %.8g %.8g %.8g %.8g %.8g %ld ",
-							tcount, TotalTime, star[i].m * (units.m / clus.N_STAR) / MSUN,
+							tcount, TotalTime, m * (units.m / clus.N_STAR) / MSUN,
 							r, star[i].vr, star[i].vt, star[i].r_peri,
 							star[i].r_apo, Rtidal, phi_rtidal, phi_zero, star[i].E, star[i].J, star[i].id);
 					
@@ -551,9 +551,7 @@ void tidally_strip_stars(void) {
 
 				if (star[i].E > gierszalpha * phi_rtidal && star[i].rnew < 1000000) {
 					dprintf("tidally stripping star with E > phi rtidal: i=%ld id=%ld m=%g E=%g binind=%ld\n", i, star[i].id, m * (units.m / clus.N_STAR) / MSUN, star[i].E, star[i].binind); 
-					fprintf(stderr,"Elena: tidally stripping star with E > phi rtidal: i=%ld id=%ld m=%g E=%g binind=%ld m=%g units=%g\n", i, star[i].id, m*(units.m / clus.N_STAR) / MSUN, star[i].E, star[i].binind, star[i].m *(units.m / clus.N_STAR) / MSUN, (units.m / clus.N_STAR) / MSUN);
-					fprintf(stderr,"Elena: Gierz value %g\n", gierszalpha * phi_rtidal);
-					fprintf(stderr, "Elena: New stellar position %g\n", star[i].rnew);
+					
 					star[i].rnew = SF_INFINITY;	/* tidally stripped star */
 					star[i].vrnew = 0.0;
 					star[i].vtnew = 0.0;
@@ -575,7 +573,7 @@ void tidally_strip_stars(void) {
 					
 					parafprintf(escfile,
 							"%ld %.8g %.8g %.8g %.8g %.8g %.8g %.8g %.8g %.8g %.8g %.8g %.8g %ld ",
-							tcount, TotalTime, star[i].m * (units.m / clus.N_STAR) / MSUN,
+							tcount, TotalTime, m * (units.m / clus.N_STAR) / MSUN,
 							r, star[i].vr, star[i].vt, star[i].r_peri,
 							star[i].r_apo, Rtidal, phi_rtidal, phi_zero, star[i].E, star[i].J, star[i].id);
 
@@ -686,9 +684,9 @@ void remove_star(long j, double phi_rtidal, double phi_zero) {
 	Etidal += E * m / clus.N_STAR;
 
 	/* logging */
-	fprintf(stderr,"Elena: removing star with id=%ld m=%g m=%g\n", star[j].id, m * (units.m / clus.N_STAR) / MSUN, star[j].m * (units.m / clus.N_STAR) / MSUN);
+	
 	parafprintf(escfile, "%ld %.8g %.8g ",
-		tcount, TotalTime, star[j].m * (units.m / clus.N_STAR) / MSUN);
+		tcount, TotalTime, m * (units.m / clus.N_STAR) / MSUN);
 	parafprintf(escfile, "%.8g %.8g %.8g ",
 		r, star[j].vr, star[j].vt);
 	parafprintf(escfile, "%.8g %.8g %.8g %.8g %.8g %.8g %.8g %ld ",
