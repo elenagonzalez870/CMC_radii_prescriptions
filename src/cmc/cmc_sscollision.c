@@ -273,9 +273,8 @@ void sscollision_do(long k, long kp, double rperimax, double w[4], double W, dou
 			if(isnan(rho1_env)){rho1_env = -100;}
 			if(isnan(rhor_env)){rhor_env = -100;}
 			
-			// Elena: For some stars, COSMIC assigns default renv and menv values of of e-10, which makes my densities exactly 3.1831e-19. I 				will change these vales to output a -100 intead, since it is not physical //
+			// Elena: For some stars, COSMIC assigns default renv and menv values of e-10, which makes my densities exactly 3.1831e-19. I 				will change these vales to output a -100 intead, since it is not physical //
 	
-
 			if(rho0_env >= 1.0e19){rho0_env = -100;}
 			if(rho1_env >= 1.0e19){rho1_env = -100;}
 			if(rhor_env >= 1.0e19){rhor_env = -100;}
