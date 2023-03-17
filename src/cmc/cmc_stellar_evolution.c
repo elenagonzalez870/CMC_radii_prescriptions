@@ -389,7 +389,10 @@ void do_stellar_evolution(gsl_rng *rng)
         dprintf ("k=%ld m=%g r=%g phi=%g vr=%g vt=%g E=%g J=%g\n", k, star_m[g_k], star_r[g_k], star_phi[g_k], star[k].vr, star[k].vt, star[k].E, star[k].J);
       } else {
         DMse += star_m[g_k] * madhoc;
-        /* Update star id for pass through. */
+        
+  
+        
+	/* Update star id for pass through. */
         bse_set_id1_pass(star[k].id);
         bse_set_id2_pass(0);
         tempbinary.bse_mass0[0] = star[k].se_mass;
@@ -452,7 +455,9 @@ void do_stellar_evolution(gsl_rng *rng)
             &(star[k].se_tphys), &tphysf, &dtp, &METALLICITY, zpars, 
             &(tempbinary.bse_tb), &(tempbinary.e), vs, &(tempbinary.bse_bhspin[0]));
         *curr_st=bse_get_taus113state();
-
+        
+     
+		
         star[k].se_mass = tempbinary.bse_mass0[0];
         star[k].se_k = tempbinary.bse_kw[0];
         star[k].se_mt = tempbinary.bse_mass[0];
@@ -469,6 +474,7 @@ void do_stellar_evolution(gsl_rng *rng)
         star[k].se_epoch = tempbinary.bse_epoch[0];
         star[k].se_tms = tempbinary.bse_tms[0];
 	star[k].se_bhspin = tempbinary.bse_bhspin[0];
+		
 
 		  /*Reset the MS timestep once we're done*/
 		  if(reduced_timestep == 1)
@@ -626,6 +632,7 @@ void do_stellar_evolution(gsl_rng *rng)
 				&(binary[kb].bse_epoch[0]), &(binary[kb].bse_tms[0]), 
 				&(binary[kb].bse_tphys), &tphysf, &dtp, &METALLICITY, zpars, 
 				&(binary[kb].bse_tb), &(binary[kb].e), vs, &(binary[kb].bse_bhspin[0]));
+			
 			*curr_st=bse_get_taus113state();
 		}
 
@@ -936,13 +943,14 @@ void handle_bse_outcome(long k, long kb, double *vs, double tphysf, int kprev0, 
     cp_binmemb_to_star(k, 0, knew);
     cp_binmemb_to_star(k, 1, knewp);
     DMse -= (star_m[get_global_idx(knew)] + star_m[get_global_idx(knewp)]) * madhoc;
+    
     /*Elena: Modifying output */
-    parafprintf(semergedisruptfile, "t=%g disruptboth id1=%ld(m1=%g) id2=%ld(m2=%g) (r=%g) type1=%d type2=%d rad1[RSUN]=%g, rad2[RSUN]=%g\n",
+    parafprintf(semergedisruptfile, "t=%g disruptboth id1=%ld(m1=%g) id2=%ld(m2=%g) (r=%g) type1=%d type2=%d rad1[RSUN]=%g rad2[RSUN]=%g\n",
       TotalTime,
-      star[knew].id, star[knew].se_mt, 
+      star[knew].id, star_m[get_global_idx(knew)] * units.mstar / FB_CONST_MSUN, 
       star[knewp].id, star_m[get_global_idx(knewp)] * units.mstar / FB_CONST_MSUN,
 		star_r[get_global_idx(k)], kprev0, kprev1, binary[kb].rad1 * units.l / RSUN, binary[kb].rad2 * units.l / RSUN);
-
+    
     destroy_obj(k);
     /* in this case vs is relative speed between stars at infinity */
 /*    star[knew].vr += star[knewp].m/(star[knew].m+star[knewp].m) * vs[2] * 1.0e5 / (units.l/units.t);
@@ -1058,7 +1066,7 @@ void handle_bse_outcome(long k, long kb, double *vs, double tphysf, int kprev0, 
 		binary_bh_merger(k, kb, knew, kprev0, kprev1, curr_st);
 
     /*Elena: Modifying output */
-    parafprintf(semergedisruptfile, "t=%g disrupt1 idr=%ld(mr=%g) id1=%ld(m1=%g):id2=%ld(m2=%g) (r=%g) typer=%d type1=%d type2=%d, radr[RSUN]=%g,rad1[RSUN]=%g, rad2[RSUN]=%g\n",
+    parafprintf(semergedisruptfile, "t=%g disrupt1 idr=%ld(mr=%g) id1=%ld(m1=%g):id2=%ld(m2=%g) (r=%g) typer=%d type1=%d type2=%d radr[RSUN]=%g rad1[RSUN]=%g rad2[RSUN]=%g\n",
       TotalTime,
       star[knew].id, star[knew].se_mt,
       binary[kb].id1, binary[kb].m1 * units.mstar / FB_CONST_MSUN,
@@ -1121,7 +1129,7 @@ void handle_bse_outcome(long k, long kb, double *vs, double tphysf, int kprev0, 
           &(star[knew].se_renv), &(star[knew].se_ospin), &(star[knew].se_epoch), &(star[knew].se_tms), 
           &(star[knew].se_tphys), &tphysf, &dtp, &METALLICITY, zpars, vs);
     */
-    
+   
     star[knew].rad = star[knew].se_radius * RSUN / units.l;
     star_m[get_global_idx(knew)] = star[knew].se_mt * MSUN / units.mstar;
     DMse -= star_m[get_global_idx(knew)] * madhoc;
@@ -1151,7 +1159,7 @@ void handle_bse_outcome(long k, long kb, double *vs, double tphysf, int kprev0, 
 	if(kprev0 == 14 && kprev1 == 14)
 		binary_bh_merger(k, kb, knew, kprev0, kprev1, curr_st);
 
-    parafprintf(semergedisruptfile, "t=%g disrupt2 idr=%ld(mr=%g) id1=%ld(m1=%g):id2=%ld(m2=%g) (r=%g) typer=%d type1=%d type2=%d radr[RSUN]=%g, rad1[RSUN]=%g, rad2[RSUN]=%g\n",
+    parafprintf(semergedisruptfile, "t=%g disrupt2 idr=%ld(mr=%g) id1=%ld(m1=%g):id2=%ld(m2=%g) (r=%g) typer=%d type1=%d type2=%d radr[RSUN]=%g  rad1[RSUN]=%g rad2[RSUN]=%g\n",
       TotalTime,
       star[knew].id, star[knew].se_mt,
       binary[kb].id1, binary[kb].m1 * units.mstar / FB_CONST_MSUN,
@@ -1496,7 +1504,8 @@ void cp_binmemb_to_star(long k, int kbi, long knew)
   star[knew].se_renv = binary[kb].bse_renv[kbi];
   star[knew].se_tms = binary[kb].bse_tms[kbi];
   star[knew].se_bhspin = binary[kb].bse_bhspin[kbi];
-  //Sourav: toy rejuvenation- variables updating
+  
+	//Sourav: toy rejuvenation- variables updating
   if (kbi==0){
     star[knew].createtime = binary[kb].createtime_m1;
     star[knew].lifetime = binary[kb].lifetime_m1;
@@ -1563,6 +1572,7 @@ void cp_SEvars_to_newstar(long oldk, int kbi, long knew)
     star[knew].se_renv = binary[kb].bse_renv[kbi];
     star[knew].se_tms = binary[kb].bse_tms[kbi];
 	star[knew].se_bhspin = binary[kb].bse_bhspin[kbi];
+    	
     //Sourav: toy rejuvenation- updating the rejuv variables for two cases- mass1 and mass2 
     if (kbi==0){
       star[knew].createtime = binary[kb].createtime_m1;
@@ -1658,6 +1668,7 @@ void cp_SEvars_to_star(long oldk, int kbi, star_t *target_star)
     target_star->se_renv = binary[kb].bse_renv[kbi];
     target_star->se_tms = binary[kb].bse_tms[kbi];
 	target_star->se_bhspin = binary[kb].bse_bhspin[kbi];
+	
     //Sourav: toy rejuvenation- updating rejuv variables for two cases mass1 and mass2
     if (kbi==1){
         target_star->createtime = binary[kb].createtime_m1;
