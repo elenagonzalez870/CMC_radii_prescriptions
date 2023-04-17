@@ -240,9 +240,6 @@ void stellar_evolution_init(void){
       tempbinary.bse_bhspin[1] = 0.0;
       tempbinary.bse_tb = 0.0;
       tempbinary.e = 0.0;
-      /*Elena*/
-      tempbinary.id1 = star[k].id;
-      tempbinary.id2 = 0.0;
 
       /*
         bse_evolv1(&(star[k].se_k), &(star[k].se_mass), &(star[k].se_mt), &(star[k].se_radius), 
@@ -426,9 +423,6 @@ void do_stellar_evolution(gsl_rng *rng)
         tempbinary.bse_bhspin[1] = 0.0;
         tempbinary.bse_tb = 0.0;
         tempbinary.e = 0.0;
-        /*Elena*/
-        tempbinary.id1 = star[k].id;
-        tempbinary.id2 = 0.0;
 
 		  /*If we've got a large MS star, we need to reduce the timestep, otherwise
 		   * we miss the transition from MS to HG to giant, and won't start applying
@@ -634,14 +628,11 @@ void do_stellar_evolution(gsl_rng *rng)
 		    bse_set_pts1(BSE_PTS1);
 
         if(isnan(binary[kb].bse_radius[0])){
-	  fprintf("id1=%ld id2=%ld \n",binary[kb].id1,binary[kb].id2);
+              printf("id1=%ld id2=%ld\n",binary[kb].id1,binary[kb].id2);
           fprintf(stderr, "An isnan occured for r1 cmc_stellar_evolution.c\n");
           fprintf(stderr, "tphys=%g tphysf=%g kstar1=%d kstar2=%d m1=%g m2=%g r1=%g r2=%g l1=%g l2=%g tb=%g\n", binary[kb].bse_tphys, tphysf, binary[kb].bse_kw[0], binary[kb].bse_kw[1], binary[kb].bse_mass[0], binary[kb].bse_mass[1], binary[kb].bse_radius[0], binary[kb].bse_radius[1], binary[kb].bse_lum[0], binary[kb].bse_lum[1], binary[kb].bse_tb);
           fprintf(stderr, "k= %ld kb=%ld star_id=%ld bin_id1=%ld bin_id2=%ld \n", k, kb, star[k].id, binary[kb].id1, binary[kb].id2);
           fprintf(stderr, "Before BSE: kprev0 =%d kprev1=%d, m1=%g, m2=%g, zams1=%g, zams2=%g, rad1=%g, rad2=%g, epoch1=%g, epoch2=%g tbprev=%g \n", kprev0, kprev1, mprev0, mprev1, zamsprev0, zamsprev1, rprev0, rprev1, epochprev0, epochprev1, tbprev);
-          
-      
-          
           exit(1);
         } 
         if(isnan(binary[kb].bse_radius[1])){
