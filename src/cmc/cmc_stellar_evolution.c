@@ -928,7 +928,7 @@ void handle_bse_outcome(long k, long kb, double *vs, double tphysf, int kprev0, 
     cp_binmemb_to_star(k, 1, knewp);
     DMse -= (star_m[get_global_idx(knew)] + star_m[get_global_idx(knewp)]) * madhoc;
     /*Elena: Modifying output */
-    parafprintf(semergedisruptfile, "t=%g disruptboth id1=%ld(m1=%g) id2=%ld(m2=%g) (r=%g) type1=%d type2=%d rad1[RSUN]=%g, rad2[RSUN]=%g\n",
+    parafprintf(semergedisruptfile, "t=%g disruptboth id1=%ld(m1=%g) id2=%ld(m2=%g) (r=%g) type1=%d type2=%d rad1[RSUN]=%g rad2[RSUN]=%g\n",
       TotalTime,
       star[knew].id, star[knew].se_mt, 
       star[knewp].id, star_m[get_global_idx(knewp)] * units.mstar / FB_CONST_MSUN,
@@ -1049,7 +1049,7 @@ void handle_bse_outcome(long k, long kb, double *vs, double tphysf, int kprev0, 
 		binary_bh_merger(k, kb, knew, kprev0, kprev1, curr_st);
 
     /*Elena: Modifying output */
-    parafprintf(semergedisruptfile, "t=%g disrupt1 idr=%ld(mr=%g) id1=%ld(m1=%g):id2=%ld(m2=%g) (r=%g) typer=%d type1=%d type2=%d, radr[RSUN]=%g,rad1[RSUN]=%g, rad2[RSUN]=%g\n",
+    parafprintf(semergedisruptfile, "t=%g disrupt1 idr=%ld(mr=%g) id1=%ld(m1=%g):id2=%ld(m2=%g) (r=%g) typer=%d type1=%d type2=%d radr[RSUN]=%g rad1[RSUN]=%g rad2[RSUN]=%g\n",
       TotalTime,
       star[knew].id, star[knew].se_mt,
       binary[kb].id1, binary[kb].m1 * units.mstar / FB_CONST_MSUN,
@@ -1142,7 +1142,7 @@ void handle_bse_outcome(long k, long kb, double *vs, double tphysf, int kprev0, 
 	if(kprev0 == 14 && kprev1 == 14)
 		binary_bh_merger(k, kb, knew, kprev0, kprev1, curr_st);
 
-    parafprintf(semergedisruptfile, "t=%g disrupt2 idr=%ld(mr=%g) id1=%ld(m1=%g):id2=%ld(m2=%g) (r=%g) typer=%d type1=%d type2=%d radr[RSUN]=%g, rad1[RSUN]=%g, rad2[RSUN]=%g\n",
+    parafprintf(semergedisruptfile, "t=%g disrupt2 idr=%ld(mr=%g) id1=%ld(m1=%g):id2=%ld(m2=%g) (r=%g) typer=%d type1=%d type2=%d radr[RSUN]=%g rad1[RSUN]=%g rad2[RSUN]=%g\n",
       TotalTime,
       star[knew].id, star[knew].se_mt,
       binary[kb].id1, binary[kb].m1 * units.mstar / FB_CONST_MSUN,

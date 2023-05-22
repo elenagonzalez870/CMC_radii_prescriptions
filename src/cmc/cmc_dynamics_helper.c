@@ -2163,7 +2163,7 @@ void binint_do(long k, long kp, double rperi, double w[4], double W, double rcm,
 						*(hier.obj[i]->obj[1]), k, kp, binary[star[knew].binind].bse_kw[1]);
 
 					if (binary[star[knew].binind].m2==0.)
-						dprintf("Zero mass remnant! Parameters: knew=%li, binind=%li, kw[0]=%i, kw[1]=%i\n",
+						dprintf("Zero mass remnant! Parameters: knew=%li binind=%li kw[0]=%i kw[1]=%i\n",
 								knew, star[knew].binind, binary[star[knew].binind].bse_kw[0],
 								binary[star[knew].binind].bse_kw[1]);
 
