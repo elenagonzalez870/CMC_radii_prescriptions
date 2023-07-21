@@ -591,7 +591,7 @@ void do_stellar_evolution(gsl_rng *rng)
 		epochprev0=binary[kb].bse_epoch[0];
 		epochprev1=binary[kb].bse_epoch[1];
 		tbprev= binary[kb].bse_tb;
-		
+
 		/*If we've got a large MS star, we need to reduce the timestep, otherwise
 		 * we miss the transition from MS to HG to giant, and won't start applying
 		 * winds for massive stars at the right time*/
